@@ -1,6 +1,7 @@
 export default {
   locale: 'en',
   messages: {
+    // post messages
     siteTitle: 'MERN Starter Blog',
     addPost: 'Add Post',
     switchLanguage: 'Switch Language',
@@ -27,5 +28,9 @@ export default {
     	  =1 {has # comment}
     	  other {has # comments}
     	} as of {date}`,
+    // auth messages
+    email: 'Email',
+    password: 'Password',
+    register: 'Register',
   },
 };

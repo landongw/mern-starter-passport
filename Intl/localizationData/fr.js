@@ -1,6 +1,7 @@
 export default {
   locale: 'fr',
   messages: {
+    // post messages
     siteTitle: 'MERN blog de démarrage',
     addPost: 'Ajouter Poster',
     switchLanguage: 'Changer de langue',
@@ -27,5 +28,9 @@ export default {
   		  =1 {has # comment}
   		  other {has # comments}
   		} as of {date} (in real app this would be translated to French)`,
+    // auth messages
+    email: 'Email',
+    password: 'Mot de passe',
+    register: 'S\'enregister',
   },
 };

@@ -39,5 +39,13 @@ export default (
         });
       }}
     />
+    <Route
+      path="/auth/signup"
+      getComponent={(nextState, cb) => {
+        require.ensure([], require => {
+          cb(null, require('./modules/Auth/pages/SignupPage').default);
+        });
+      }}
+    />
   </Route>
 );

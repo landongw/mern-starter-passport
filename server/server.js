@@ -1,9 +1,13 @@
 import Express from 'express';
 import compression from 'compression';
 import mongoose from 'mongoose';
+import passport from 'passport';
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import session from 'express-session';
 import path from 'path';
 import IntlWrapper from '../client/modules/Intl/IntlWrapper';
+import localPassport from './local-passport.js';
 
 // Webpack Requirements
 import webpack from 'webpack';
@@ -33,6 +37,7 @@ import Helmet from 'react-helmet';
 import routes from '../client/routes';
 import { fetchComponentData } from './util/fetchData';
 import posts from './routes/post.routes';
+import auth from './routes/auth.routes';
 import dummyData from './dummyData';
 import serverConfig from './config';
 
@@ -52,10 +57,22 @@ mongoose.connect(serverConfig.mongoURL, (error) => {
 
 // Apply body Parser and server public assets and routes
 app.use(compression());
+app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
+app.use(session({
+  secret: serverConfig.sessionSecret,  // session secret
+  resave: false,
+  saveUninitialized: false,
+}));
+app.use(passport.initialize());
+localPassport(passport);
+app.use(passport.session()); // persistent login sessions
+
+
 app.use(Express.static(path.resolve(__dirname, '../dist')));
-app.use('/api', posts);
+app.use('/api/auth', auth(passport));
+app.use('/api/posts', posts);
 
 // Render Initial HTML
 const renderFullPage = (html, initialState) => {
